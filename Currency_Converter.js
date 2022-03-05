@@ -1,6 +1,6 @@
 /**
  * 
- * @param ActiveRow 
+ * @param none 
  * @returns {Number}
  * @customfunction
  * @author: Matt Daly
@@ -19,67 +19,92 @@ function CURRENCY_CONVERTER()
     var currencyArray = [];
   //fetch active row
     var activeRow = SpreadsheetApp.getActiveSheet().getActiveCell().getRow();
-  //Loop through active row and apply conversions
-    for (var i = 0; i < activeRow.length; i++) 
+    //get the values from the active row
+    var values = SpreadsheetApp.getActiveSheet().getRange(activeRow, 1, 1, SpreadsheetApp.getActiveSheet().getLastColumn()).getValues();
+    //break the values into a map{char, string} line by line with the char as the key starting at A
+    var map = values[0].map((value, index) => ({ char: String.fromCharCode(65 + index), value: value }));
+
+   
+    
+    
+    
+
+   
+    
+
+    //Loop through active row and apply conversions
+
+
+    for (var i = 4; i < 14; i++) 
     {
-        //get the value of the cell
-        var cellValue = activeRow[i].getValue();
-        //get the value of the column
-        var columnValue = activeRow[i].getColumn().getValue();
-        //print column value
-        console.log(columnValue);
-        switch (columnVal) 
+        console.log("VALUE BEFORE CONVERSION IS " + map[i].value);
+        
+        switch (map[i].char) 
         {
             case "E":
-                cellValue *= 0.05;
+                
+                map[i].value *= 0.05;
                 break;
             case "F":
-                cellValue *= 0.10;
+                
+                map[i].value *= 0.10;
                 break;
             case "G":
-                cellValue *= 0.25;
+                
+                map[i].value *= 0.25;
                 break;
             case "H":
-                cellValue *= 1.00;
+                
+                map[i].value *= 1.00;
                 break;
             case "I":
-                cellValue *= 2.00;
+                
+                map[i].value *= 2.00;
                 break;
             case "J":
-                cellValue *= 5.00;
+                
+                map[i].value *= 5.00;
                 break;
             case "K":
-                cellValue *= 10.00;
+                map[i].value *= 10.00;
                 break;
             case "L":
-                cellValue *= 20.00;
+                map[i].value *= 20.00;
                 break;
             case "M":
-                cellValue *= 50.00;
+                map[i].value *= 50.00;
                 break;
             case "N":
-                cellValue *= 100.00;
+                map[i].value *= 100.00;
+                break;
+            default:
                 break;
 
         }
+         //debug print value
+        Logger.log(map[i].value + " VALUE AT " + map[i].char);
+        
+        //Add cellValue to currencyArray
+        currencyArray.push(Number(map[i].value));
     }
 
-    //Add cellValue to currencyArray
-    currencyArray.push(cellValue);
-    //loop through the currencyArray and sum the values
+    //debug print currencyArray
+    Logger.log(currencyArray);
+
     var sum = 0;
-    for (var i = 0; i < currencyArray.length; i++)
+    //loop through currencyArray and sum the values
+    for(var i = 0; i < currencyArray.length; i++)
     {
+        Logger.log(currencyArray[i] + " + " + sum);
         sum += currencyArray[i];
+        Logger.log(" = " + sum);
     }
     
-    //format the sum to 2 decimal places with a dollar sign
-    var sumFormatted = "$" + sum.toFixed(2);
 
-    //debug print the sumFormatted
-    console.log(sumFormatted);
-    //return the sum
-    return sumFormatted;
+    
+
+   return sum;
+  
     
 }
 
